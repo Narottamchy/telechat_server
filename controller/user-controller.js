@@ -10,10 +10,9 @@ export const addUser = async (req,res)=>{
         }
         const newUser = new User(req.body);
         await newUser.save();
-        console.log(req.body);
         return res.status(200).json(newUser);
     }catch(error){
-        return response.status(500).json(error.message);
+        return res.status(500).json(error.message);
     }
 }
 
