@@ -55,9 +55,11 @@ io.on('connection',  (socket) => {
     })
 
     // Handle typing event
-    socket.on('typing', ({ senderId }) => {
-        socket.broadcast.emit('typing', { senderId });
+    socket.on('typing', (data) => {
+        // Broadcast the typing event to all connected clients except the sender
+        socket.broadcast.emit('typing', data);
       });
+    
 
     //disconnect
     socket.on('disconnect', () => {
