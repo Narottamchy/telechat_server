@@ -2,10 +2,12 @@ import express from 'express';
 import Connection from './database/db.js';
 import route from './routes/route.js';
 import cors from 'cors';
+import dotenv from "dotenv";
 import bodyParser from 'body-parser';
 import { Server } from 'socket.io';
+dotenv.config();
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 
 const app = express();
@@ -20,7 +22,7 @@ Connection();
 
 const io = new Server(9000, {
     cors: {
-        origin: 'http://localhost:3000',
+        origin: `${process.env.CLIENT_SERVER}`,
     }, 
 })
 

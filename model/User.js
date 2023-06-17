@@ -21,8 +21,7 @@ const userSchema = mongoose.Schema({
         type:Boolean
     },
     photoURL:{
-        type:String,
-        required:true
+        type:String
     },
     providerData:{
         type:Array
