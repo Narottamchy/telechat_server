@@ -12,7 +12,9 @@ const PORT = process.env.HOST_PORT || 8000;
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: `${process.env.CLIENT_SERVER}`
+}));
 app.use(bodyParser.json({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(function(req, res, next) {
