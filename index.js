@@ -20,7 +20,7 @@ app.use('/',route);
 
 Connection();
 
-const io = new Server(9000, {
+const io = new Server(PORT, {
     cors: {
         origin: `${process.env.CLIENT_SERVER}`,
     }, 
