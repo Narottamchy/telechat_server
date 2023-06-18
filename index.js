@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 import { Server } from 'socket.io';
 dotenv.config();
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.HOST_PORT || 8000;
 
 
 const app = express();
