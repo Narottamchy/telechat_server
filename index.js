@@ -42,7 +42,7 @@ const getUser = (userId) => {
 }
 
 io.on('connection',  (socket) => {
-    console.log('user connected')
+    // console.log('user connected')
 
     //connect
     socket.on("addUsers", userData => {
@@ -65,11 +65,11 @@ io.on('connection',  (socket) => {
 
     //disconnect
     socket.on('disconnect', () => {
-        console.log('user disconnected');
+        // console.log('user disconnected');
         removeUser(socket.id);
         io.emit('getUsers', users);
     })
 })
 
 
-app.listen(PORT,()=>{console.log("server runner")})
+app.listen(PORT)
