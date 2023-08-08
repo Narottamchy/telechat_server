@@ -15,8 +15,10 @@ const app = express();
 app.use(cors({
   origin: `${process.env.CLIENT_SERVER}`
 }));
+
 app.use(bodyParser.json({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
@@ -41,6 +43,7 @@ const io = new Server(server, {
 });
 
 let users = [];
+let offlineMessages = {}; // { userId: [message1, message2, ...] }
 
 const addUser = (userData, socketId) => {
   !users.some(user => user.uid === userData.uid) && users.push({ ...userData, socketId });
@@ -60,13 +63,31 @@ io.on('connection', (socket) => {
   // Connect
   socket.on("addUsers", userData => {
     addUser(userData, socket.id);
+
+    // Check for offline messages and deliver them
+    const userOfflineMessages = offlineMessages[userData.uid];
+    if (userOfflineMessages) {
+      userOfflineMessages.forEach((message) => {
+        io.to(socket.id).emit('getMessage', message);
+      });
+      delete offlineMessages[userData.uid];
+    }
+
     io.emit("getUsers", users);
   });
 
   // Send message
   socket.on('sendMessage', (data) => {
     const user = getUser(data.receiverId);
-    io.to(user.socketId).emit('getMessage', data);
+    if (user) {
+      io.to(user.socketId).emit('getMessage', data);
+    } else {
+      // Store the message for offline delivery
+      if (!offlineMessages[data.receiverId]) {
+        offlineMessages[data.receiverId] = [];
+      }
+      offlineMessages[data.receiverId].push(data);
+    }
   });
 
   // Handle typing event
