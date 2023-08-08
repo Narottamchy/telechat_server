@@ -32,7 +32,7 @@ app.use('/', route);
 Connection();
 
 const server = app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  // console.log(`Server is running on http://localhost:${PORT}`);
 });
 
 const io = new Server(server, {
@@ -58,7 +58,7 @@ const getUser = (userId) => {
 };
 
 io.on('connection', (socket) => {
-  // console.log('user connected');
+  // // console.log('user connected');
 
   // Connect
   socket.on("addUsers", userData => {
@@ -98,7 +98,7 @@ io.on('connection', (socket) => {
 
   // Disconnect
   socket.on('disconnect', () => {
-    // console.log('user disconnected');
+    // // console.log('user disconnected');
     removeUser(socket.id);
     io.emit('getUsers', users);
   });
